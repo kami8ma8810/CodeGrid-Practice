@@ -1,0 +1,285 @@
+html {
+	overflow-y: scroll;
+}
+
+html.is-drawerOpen {
+	overflow: hidden;
+}
+
+body {
+	margin: 0;
+	background-color: white;
+}
+
+.header {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	height: 60px;
+}
+
+.header-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+	box-sizing: border-box;
+	border-width: 0;
+	padding: 0;
+	width: 60px;
+	height: 100%;
+	background-color: transparent;
+}
+
+.header-button::before {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.05);
+	content: "";
+	opacity: 0;
+	transition-property: opacity;
+	transition-duration: 0.1s;
+	transition-timing-function: linear;
+}
+
+.header-button:hover::before {
+	opacity: 1;
+}
+
+
+.drawer {
+	position: fixed;
+	z-index: 0;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.drawer-backdrop {
+	position: absolute;
+	z-index: -1;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.drawer[aria-expanded] {
+	transition-property: visibility;
+	transition-duration: 0.2s;
+}
+
+.drawer[aria-expanded] .drawer-backdrop {
+	transition-property: opacity;
+	transition-duration: 0.2s;
+	transition-timing-function: linear;
+}
+
+.drawer[aria-expanded] .drawer-nav {
+	transition-property: transform opacity;
+	transition-duration: 0.2s;
+	transition-timing-function: ease-in-out;
+}
+
+/* ドロワー開いているとき */
+.drawer[aria-expanded="true"] {
+	visibility: visible;
+	transition-duration: 0s;
+}
+
+.drawer[aria-expanded="true"] .drawer-backdrop {
+	opacity: 1;
+}
+
+.drawer[aria-expanded="true"] .drawer-nav {
+	// transform: translateY(0);
+	opacity: 1;
+}
+
+/* ドロワー閉じているとき */
+.drawer[aria-expanded="false"] {
+	visibility: hidden;
+	transition-delay: 0.7s;
+}
+
+.drawer[aria-expanded="false"] .drawer-backdrop {
+	opacity: 0;
+	// transition-delay: 1s;
+}
+
+.drawer[aria-expanded="false"] .drawer-nav {
+	// transform: translateY(-100%);
+	opacity: 0;
+	transition-delay: 0.7s;
+}
+
+.drawer-nav {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+}
+
+.nav {
+	background-color: #aaa;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+	position: relative;
+}
+
+.nav-button {
+	position: absolute;
+	right: 0;
+	box-sizing: border-box;
+	border-width: 0;
+	padding: 0;
+	width: 60px;
+	height: 60px;
+	background-color: transparent;
+}
+
+.nav-button::before {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.2);
+	content: "";
+	opacity: 0;
+	transition-property: opacity;
+	transition-duration: 0.1s;
+	transition-timing-function: linear;
+}
+
+.nav-button:hover::before {
+	opacity: 1;
+}
+
+.nav-list {
+	margin-top: 60px;
+	margin-bottom: 0;
+	padding-left: 0;
+	list-style-type: none;
+	margin-left: 30%;
+	overflow: hidden;
+	transition: opacity .3s ease-in;
+}
+
+.nav-item {
+	padding: 0;
+	margin: 0;
+	font-size: 36px;
+	text-transform: uppercase;
+}
+
+.nav-link {
+	text-decoration: none;
+	color: #333;
+	transition: color .3s;
+	position: relative;
+	overflow: hidden;
+	display: inline-block;
+
+	&:hover {
+		color: #fff;
+
+		span {
+			animation: layer-in .3s ease forwards;
+
+			&::before {
+				animation: text-in .3s ease forwards
+			}
+		}
+	}
+
+	span {
+		position: absolute;
+		left: -1px;
+		overflow: hidden;
+		background-color: #aaa;
+		width: 100%;
+		display: block;
+		transform: translate3d(-100%, 0, 0);
+		animation: layer-out .3s ease-out;
+		-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
+
+		&::before {
+			background-color: #aaa;
+			content: attr(data-text);
+			width: 100%;
+			display: block;
+			transform: translate3d(100%, 0, 0);
+			color: #fff;
+			animation: text-out .3s ease-out;
+			-webkit-backface-visibility: hidden;
+			backface-visibility: hidden
+		}
+	}
+}
+
+@keyframes layer-in {
+	0% {
+		transform: translate3d(-100%, 0, 0)
+	}
+
+	to {
+		transform: translateZ(0)
+	}
+}
+
+@keyframes layer-out {
+	0% {
+		transform: translateZ(0)
+	}
+
+	to {
+		transform: translate3d(100%, 0, 0)
+	}
+}
+
+@keyframes text-in {
+	0% {
+		transform: translate3d(100%, 0, 0)
+	}
+
+	to {
+		transform: translateZ(0)
+	}
+}
+
+@keyframes text-out {
+	0% {
+		transform: translateZ(0)
+	}
+
+	to {
+		transform: translate3d(-100%, 0, 0)
+	}
+}
+
+/* main部分 */
+.main {
+	display: block;
+	/* for IE */
+	margin-top: 120px;
+	margin-right: auto;
+	margin-left: auto;
+	width: 80%;
+	max-width: 600px;
+}
+
+.main>p {
+	font-size: 40px;
+	text-align: center;
+}
